@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Survival Sample Size</title>
+  <link rel="stylesheet" type="text/css" href="G:/My Drive/OBYSSBJK_Area/02_JK/RShiny/Training/HTLM/Style.css">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript"
+  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+   <header>
+     <h1> Sample Size Calculators </h1>
+	 <a href="" target="" class="Bref">Home</a>
+	 <a href="" target="" class="Bref2">Normal - Mean</a>
+	 <a href="" target="" class="Bref2">Normal - Proportion</a>
+	 <a href="" target="" class="Bref2">Cross-Over</a>
+	 <a href="" target="" class="Bref2">Survival</a>
+	 <a href="" target="" class="Bref2">Group Sequential</a>
+	 <a href="" target="" class="Bref2">Formulas</a>
+	 <a href="" target="" class="Bref2">References</a>
+	 
+   </header>
+   
+   <div class="rcorners1">
+	   <h2> Formulas <h2>
+   </div>
+   <br>
+   
+  <div>
+  
+  <h3> Normally Distributed - Means </h3>
+
+<p>
+Using the definition of power:
+</p> 
+
+\[
+    \mathbb{P}(\text{Reject} \; H_0 | H_1 \; \text{is true}) = 1 - \beta,
+\]
+
+<p>
+the formula for the number of patients required can be obtained using:
+</p>
+
+\[
+    n = \frac{1}{r(1-r)}\frac{\left(\Phi^{-1}\left(1-\alpha\right) + \Phi^{-1}\left(1-\beta\right)^2  \right)}{\Delta^2}\sigma^2,
+\]
+
+<p>
+where:
+</p>
+
+<ul>
+    <li> $\alpha$ is the Type I error. </li>
+    <li> $\beta$ is the Type II error (or $1-\beta$ is the power). </li>
+    <li> $r$ is the proportion of the treatment allocation allocated to the experimental treatment. </li>
+    <li> $\Delta$ is the expected treatment effect. </li>
+    <li> $\sigma$ is the standard deviation for the treatment effect </li>
+</ul>
+
+<h3> Crossover Trials - Differnece in Means </h3>
+
+<p>
+Using the work of Siyasinghe and Sooriyarachchi (2011), they consider the commonly used mixed effects model used for cross-over trials. Assuming this mixed effect model:
+</p>
+
+\[
+    Y_{ijk} = \mu + t_k + p_i + s_{ijk} + e_{ijk},
+\]
+
+<p>
+where:
+</p>
+
+<ul>
+    <li> $Y_{ijk}$ is the response value of the $j^{\text{th}}$ subject result in the $i^{\text{th}}$ treatment period on the $k^{\text{th}}$ treatment. </li>
+    <li> $t_k$ is the effect of $k^{\text{th}}$ treatment. </li>
+    <li> $p_i$ is the effect of the $i^{\text{th}}$ period. </li>
+    <li> $s_{ijk}$ is the random effect of the $j^{\text{th}}$ subject in the $i^{\text{th}}$ treatment period on the $k^{\text{th}}$ treatment. </li>
+    <li> $e_{ijk}$ is the random error term. </li>
+</ul>
+
+<p>
+If you let $\Delta$ be the expected treatment difference, then the required number of subjects can be calculated as:
+</p>
+\[
+n = \frac{\left(\Phi^{-1}\left(1-\alpha\right) + \Phi^{-1}\left(1-\beta\right)^2  \right)}{2\Delta^2}\sigma^2,
+\]
+<p>
+where the interpretations for $\alpha,\beta,\sigma$ are the same as the normally distributed case.
+</p>
+
+<h3> Survival Sample Size </h3>
+<p>
+For survival trials, the sample size calculations actually calculate the required number of events that need to be observed before analysis takes place, rather than the number of patients required. 
+
+Using the formula from Schoenfeld (1983), the number of events required is:
+</p>
+
+\[
+    d=\frac{1}{r(r-1)}\frac{\left(\Phi^{-1}\left(1-\alpha\right) + \Phi^{-1}\left(1-\beta\right)\right)^2}{\log^2(\Delta)},
+\]
+
+<p>
+where all the values have the same interpretation as the normally distributes case, except $\Delta$, which is the expected hazard ratio. 
+
+While the total number of people required doesn't effect the number of events (which means it doesnt effect the Type I error) it can be estimated. Using the methods of Julious (2009), first let;
+</p>
+
+\[
+    \lambda_X = \frac{-\log(1-p_X)}{T},
+\]
+<p>
+where:
+</p>
+<ul>
+    <li> $\lambda_X$ is the exponential rate parameter for survival on treatment $X$. </li>
+    <li> $p_X$ is the probability of observing an event on treatment $X$ </li>
+    <li> $T$ is the 'time scale' the probability of observing an event is calculated over, for example, and annual death rate would mean $T=1$. </li>
+</ul>
+
+<p>
+Using the expected number of events for treatment $X$:
+</p>
+
+\[
+    \pi_X = \frac{\lambda_X}{\lambda_X + \nu}\left[ 1- \frac{e^{-F(\lambda_X + \nu)} \times \left( 1 - e^{-A(\lambda_X + \nu)}\right)}{A(\lambda_X + \nu)} \right],
+\]
+
+<p>
+where:
+</p>
+
+<ul>
+    <li> $\nu$ is the exponential drop out rate, calculated as $\nu = \frac{-\log(1-R)}{T}$, where $R$ is the probability of a drop out. </li>
+    <li> $F$ is the follow up time (on the same scale as $T$). </li>
+    <li> $A$ is the accrual rime (on the same scale as $T$). </li>
+</ul>
+
+<p>
+Using this, the mean number of events for the trial can be calculated as:
+</p>
+\[
+    \pi = \frac{1}{\left(\frac{1}{\pi_1}+\frac{1}{\pi_2}\right)},
+\]
+
+<p>
+meaning the predicted total sample size, $N$ is;
+</p>
+\[
+ N = \pi^{-1} \times d
+\]
+
+<h3> Group-Sequential Designs </h3>
+<p>
+For the group-sequntial calculation, the R package `gsDesign' was used. This package contains the methods of Pocock (1977) , O'Brien and Flemming (1979) and, Kim and Demets (1983). 
+</p> 
+   </div>
+
+</body>
+
+</html>
