@@ -160,6 +160,40 @@ meaning the predicted total sample size, $N$ is;
 <p>
 For the group-sequntial calculation, the R package `gsDesign' was used. This package contains the methods of Pocock (1977) , O'Brien and Flemming (1979) and, Kim and Demets (1983). 
 </p> 
+	  
+<p>
+For this package, the Sample size is estimated through a method developed by Jennison and Turnbull (2000), which is to calculate the Information required in a trial by using the 'cannonical joint distribution'. This approach is
+the 'error' spending apporach, but the error spending function can be specified such that it gives boundaries very similar to the Pocock (1977) or O'Brien and Flemming (1979) boundaries. The cannonical joint distribution is such
+that :
+</p>
+
+\[
+	\mathbb{E}\left[Z_k\right] = \theta\sqrt{\mathcal{I}_k} \;\;\;\; \text{Cov}(Z_i,Z_j) = \sqrt{\mathcal{I}_i/\mathcal{I}_j}
+\]
+
+<p>
+Given this, the information required for the trial can be calculated using the definition of power:
+</p>
+
+\[
+  \mathbb{P}\left(\text{Reject} \; H_0 \; \text{at the first interim}\right)\; \text{or} \; \mathbb{P}\left(\text{Continue to the second interim interim, then reject} \; H_0 \; \text{at the second interim}\right) ... = 1-\beta
+\]
+
+<p>
+Given that one can calculate the values for the upper and lower boundaries at each interim (not shown here), and place an assumptions such as equally spaced interims, so that $\mathcal{I}_{MAX} = k\mathcal{I}_k$, 
+then differing values of $\mathcal{I}_{MAX}$ can be input into the power equation untill the result is close to $1-\beta$.
+</p>
+
+<p>
+The gsDesing package uses the information ratio between the fixed design and group-sequntial design:
+</p>
+\[
+	r = \frac{\mathcal{I}_{GS}}{\mathcal{I}_{fix}} = \frac{n_{GS}}{n_{fix}} \Rightarrow n_{GS} = rn_{fix}
+\]
+
+<p>
+ To give a sample size based on this ratio. If in the R function, a n.fix input is not specified, the package will just return the ratios, rather than the smaple size.
+</p>	  
    </div>
 
 </body>
